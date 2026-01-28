@@ -1,0 +1,76 @@
+# Values for manufacturing-ai Helm chart
+# This file gets updated during deployment with build-specific information
+
+replicaCount: 1
+
+image:
+  repository: manufacturing-ai
+  pullPolicy: IfNotPresent
+  # Tag gets set during deployment
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: "manufacturing-ai"
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 8000
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 1Gi
+  requests:
+    cpu: 200m
+    memory: 512Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# Custom configuration for the manufacturing system
+config:
+  environment: production
+  logLevel: INFO
+  assetId: "GRANITE_BLOCK_DEFAULT"
+  maxCycles: 100
+  mqttBrokerHost: "emqx-service"
+  mqttBrokerPort: 1883

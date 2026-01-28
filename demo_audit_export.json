@@ -1,0 +1,28 @@
+{
+  "export_timestamp": "2026-01-21T18:34:56.223599",
+  "total_events": 1,
+  "events": [
+    {
+      "event_type": "PARAMETER_ADJUSTED",
+      "timestamp": "2026-01-21T18:34:55.940491",
+      "asset_id": "SP-2024-001",
+      "user_id": "test_user",
+      "session_id": null,
+      "details": {
+        "parameter": "param_4",
+        "old_value": 40.0,
+        "new_value": 50.0,
+        "iteration": 4
+      },
+      "correlation_id": "batch-test-4",
+      "source_component": "DemoTest",
+      "severity": "INFO",
+      "signature": "B+XJsCv7kR18HFb1h9CFiTYChEAHcm7TKuyWqP9ggRygf8x4/kIK+zdktcRgFgCogdP7yQGTZoZQl/t9lvGWSGbNHb8qfKX3sSQu6loGIcIoil46DSEFAnkAgCeczdaIpuGbU+7P9sGgIyKht84PQvA6wdKnOwrkWLElLgrvRbMKubw/n2n3k2VbAJtfFrQxc6kRed1aotBxjFVFUb5qn3aQAzGTQHl4JbbnlLL9UyCLDxR72mTAYOUmAkqPLuiuj630V7zVLFDY+8v3MFQQdDkLBxWbnasE7VUpKYNdH7NtAkxR3uwXJD2arJCUwqTrBL8QXWLxED/080UK2Zf6kA==",
+      "electronic_signature": null,
+      "reason_for_change": null,
+      "is_locked": false,
+      "buffer_sequence": null
+    }
+  ],
+  "export_format": "time_series_audit_trail_v1.0"
+}

@@ -1,0 +1,25 @@
+# Deep Logic / IP
+ai/
+manufacturing_cps.py
+metrology/
+robotics/
+drivers/
+ndt/
+sensors/
+utils/predictive_maintenance.py
+
+# Redundant/Sensitive
+showcase/
+deploy.py
+deploy_script_backup.py
+
+# Artifacts
+*.db
+*.log
+__pycache__/
+*.pyc
+
+# Environment
+.env
+.venv
+venv/

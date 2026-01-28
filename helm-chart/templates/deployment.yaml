@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "manufacturing-ai.fullname" . }}
+  labels:
+    {{- include "manufacturing-ai.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "manufacturing-ai.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "manufacturing-ai.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "manufacturing-ai.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          env:
+            - name: MANUFACTURING_ENVIRONMENT
+              value: {{ .Values.config.environment | quote }}
+            - name: MANUFACTURING_LOG_LEVEL
+              value: {{ .Values.config.logLevel | quote }}
+            - name: MANUFACTURING_ASSET_ID
+              value: {{ .Values.config.assetId | quote }}
+            - name: MANUFACTURING_MAX_CYCLES
+              value: {{ .Values.config.maxCycles | quote }}
+            - name: MANUFACTURING_MQTT_BROKER_HOST
+              value: {{ .Values.config.mqttBrokerHost | quote }}
+            - name: MANUFACTURING_MQTT_BROKER_PORT
+              value: {{ .Values.config.mqttBrokerPort | quote }}
+          livenessProbe:
+            exec:
+              command:
+                - python
+                - -c
+                - "import sys; from main import ManufacturingOrchestrator; print('Health check OK')"
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command:
+                - python
+                - -c
+                - "import sys; from main import ManufacturingOrchestrator; print('Ready check OK')"
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
